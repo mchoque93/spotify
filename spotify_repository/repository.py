@@ -5,6 +5,7 @@ from typing import List
 from client import SpotifyClient
 from config import BASE_URL
 from models.artist import Artist
+from models.playlist import Playlist
 from models.song import Song
 from collections import Counter
 
@@ -45,9 +46,12 @@ class SpotifyRepository:
             lista_tracks.append(url_tracks)
 
         dic = {}
-        for parametro in ['danceability', 'tempo', 'acousticness', 'energy', 'instrumentalness', 'liveness', 'loudness', 'valence']:
+        for parametro in ['danceability', 'tempo', 'acousticness', 'energy', 'instrumentalness', 'liveness', 'loudness',
+                          'valence']:
             dic[parametro] = statistics.mean([row[parametro] for row in lista_tracks])
-            print(dic)
-
-
-
+            playlist = Playlist(disco=cover, num_followers=num_followers, tempo=dic['tempo'],
+                                acousticness=dic['acousticness'],
+                                danceability=dic['danceability'], energy=dic['energy'],
+                                instrumentalness=dic['instrumentalness'],
+                                liveness=dic['liveness'], loudness=dic['loudness'], valence=dic['valence'])
+            return playlist
